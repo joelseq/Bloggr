@@ -59,7 +59,146 @@ app.get('/', (req, res) => {
 
 });
 
+//========================
+// GET form for new post
+//========================
+app.get('/new', (req, res) => {
 
+  // Render the 'new-post' view
+  res.render('new-post');
+
+});
+
+//========================
+// POST creates a new post
+//========================
+app.post('/', (req, res) => {
+  // Create a post object with the information received
+  // from the body of the request
+  const post = {
+    title: req.body.title,
+    post: req.body.post
+  };
+
+  // Save the post to the database
+  db.post(post, (err, created) => {
+    // If there was an error, log it
+    if(err) {
+      console.log(err);
+    }
+    // Redirect to the '/' route
+    res.redirect('/');
+  });
+
+});
+
+//==========================
+// GET a single post
+//==========================
+app.get('/:id', (req, res) => {
+
+  // Get the post form the database
+  db.get(req.params.id, (err, found) => {
+    // If there was an error, log it
+    if(err) {
+      console.log(err);
+      // Redirect to the '/' route
+      res.redirect('/');
+    }
+    // Else the post was found
+    else {
+      res.render('show-post', { post: found });
+    }
+  });
+
+});
+
+//==========================
+// GET form to edit a post
+//==========================
+app.get('/:id/edit', (req, res) => {
+
+  // Get the post from the database
+  db.get(req.params.id, (err, found) => {
+    // If there was an error, log it
+    if(err) {
+      console.log(err);
+      // Redirect to the '/' route
+      res.redirect('/');
+    }
+    // Else the post was found
+    else {
+      res.render('edit-post', { post: found });
+    }
+  });
+
+});
+
+//===============================================
+// PUT a post back in the database after updating
+//===============================================
+app.put('/:id', (req, res) => {
+
+  // Get the post from the database
+  db.get(req.params.id, (err, found) => {
+    // If there was an error, log it
+    if(err) {
+      console.log(err);
+      // Redirect to the '/' route
+      res.redirect('/');
+    }
+    // Else the post was found
+    else {
+      // Now save the updated post
+      db.put({
+        _id: found._id,
+        _rev: found._rev,
+        title: req.body.title,
+        post: req.body.post
+      }, (err, saved) => {
+        // If there was an error, log it
+        if(err) {
+          console.log(err);
+        }
+        // Redirect to the '/' route
+        res.redirect('/');
+      });
+    }
+  });
+
+});
+
+//====================================
+// DELETE a post from the database
+//====================================
+app.delete('/:id', (req, res) => {
+
+  // Get the post from the database
+  db.get(req.params.id, (err, found) => {
+    // If there was an error, log it
+    if(err) {
+      console.log(err);
+      // Redirect to the '/' route
+      res.redirect('/');
+    }
+    // Else the post was found
+    else {
+      // Remove the post from the database
+      db.remove(found, (err, removed) => {
+        // If there was an error, log it
+        if(err) {
+          console.log(err);
+        }
+        // Redirect to the '/' route
+        res.redirect('/');
+      });
+    }
+  });
+
+});
+
+
+// This is a route simply to test if the server is working
 app.get('/ping', (req, res) => {
   res.send('Hello NodeSchool!');
 });
