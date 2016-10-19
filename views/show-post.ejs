@@ -10,6 +10,12 @@
         <div class="panel-body">
           <p><%= post.post %></p>
         </div>
+        <div class="panel-footer">
+          <a class="btn btn-warning" href="/<%= post._id%>/edit">Update</a>
+          <form class="inline-form" action="/<%= post._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
