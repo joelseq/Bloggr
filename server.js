@@ -41,7 +41,22 @@ app.set('view engine', 'ejs');
 // GET all posts
 //======================
 app.get('/', (req, res) => {
-  
+
+  // Find all the documents
+  db.allDocs({
+    include_docs: true,
+    attachments: true
+  }, (err, result) => {
+    // If there was an error, log it
+    if(err) {
+      console.log(err);
+    }
+    // Else render the 'posts' view and pass it all the posts
+    else {
+      res.render('posts', { posts: result.rows });
+    }
+  });
+
 });
 
 
