@@ -22,10 +22,29 @@ app.use(logger('dev'));
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 
-// =================================================
+// =======================================================================
 // RESTful Routes
 // HTTP Verbs: GET, POST, PUT, DELETE
-// =================================================
+//
+// Name     |   Path      |   HTTP Verb |   Purpose
+// =======================================================================
+// Index    |   /         |   GET       | List all the posts
+// New      |   /new      |   GET       | Show a form to create new posts
+// Create   |   /         |   POST      | Create a new post
+// Show     |   /:id      |   GET       | Show a single post
+// Edit     |   /:id/edit |   GET       | Show a form to edit a post
+// Update   |   /:id      |   PUT       | Update a particular post
+// Destroy  |   /:id      |   DELETE    | Delete a particular post
+// =======================================================================
+
+//======================
+// GET all posts
+//======================
+app.get('/', (req, res) => {
+  
+});
+
+
 app.get('/ping', (req, res) => {
   res.send('Hello NodeSchool!');
 });
